@@ -1,0 +1,28 @@
+@startuml
+interface IGameModel {
+    IsGameStarted : bool <<get>> <<set>>
+    RequiredContactTime : float <<get>>
+    GameOverTime : float <<get>>
+    GameTime : float <<get>> <<set>>
+    SaveFilePath : string <<get>> <<set>>
+    TiltSensitivity : float <<get>> <<set>>
+    ResetContactTimes() : void
+}
+class GameModel {
+    + IsGameStarted : bool <<get>> <<set>> = false
+    + RequiredContactTime : float <<get>> = 3.0f
+    + GameOverTime : float <<get>> = 30.0f
+    + GameTime : float <<get>> <<set>> = 0.0f
+    + SaveFilePath : string <<get>> <<set>> = ""
+    + TiltSensitivity : float <<get>> <<set>> = 20.0f
+    + GameModel()
+    + ResetContactTimes() : void
+}
+class "IList`1"<T> {
+}
+IGameModel --> "TopTimes<float>" "IList`1"
+IGameModel --> "ScoreData" ScoreData
+IGameModel <|-- GameModel
+GameModel o-> "TopTimes<float>" "IList`1"
+GameModel o-> "ScoreData" ScoreData
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+interface IGameView {
+    ShowStartUI() : void
+    HideStartUI() : void
+    ShowGameStage() : void
+    HideGameStage() : void
+    ShowGameClearUI() : void
+    HideGameClearUI() : void
+    ShowGameOverUI() : void
+    HideGameOverUI() : void
+    ShowEndGameCommonUI() : void
+    HideEndGameCommonUI() : void
+    ShowPlayerRankUI() : void
+    HidePlayerRankUI() : void
+    DisplayScores(scoreData:ScoreData) : void
+    UpdateGameTime(gameTime:float) : void
+}
+class GameView {
+    + ShowStartUI() : void
+    + HideStartUI() : void
+    + ShowGameStage() : void
+    + HideGameStage() : void
+    + ShowGameClearUI() : void
+    + HideGameClearUI() : void
+    + ShowGameOverUI() : void
+    + HideGameOverUI() : void
+    + ShowEndGameCommonUI() : void
+    + HideEndGameCommonUI() : void
+    + ShowPlayerRankUI() : void
+    + HidePlayerRankUI() : void
+    + DisplayScores(scoreData:ScoreData) : void
+    + UpdateGameTime(gameTime:float) : void
+}
+MonoBehaviour <|-- GameView
+IGameView <|-- GameView
+GameView --> "_startUI" GameObject
+GameView --> "_gameStage" GameObject
+GameView --> "_gameClearUI" GameObject
+GameView --> "_gameOverUI" GameObject
+GameView --> "_endGameCommonUI" GameObject
+GameView --> "_playerRankUI" GameObject
+GameView --> "_rank1" TMP_Text
+GameView --> "_rank2" TMP_Text
+GameView --> "_rank3" TMP_Text
+GameView --> "_gameTime" TMP_Text
+@enduml

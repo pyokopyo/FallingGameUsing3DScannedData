@@ -1,0 +1,13 @@
+@startuml
+interface IBallFactory {
+    CreateBall(prefab:GameObject, parent:Transform, position:Vector3) : Ball
+    DestroyBall(ballGameObject:GameObject) : void
+    CheckBallContactTime(ballGameObject:GameObject, currentContactTime:float) : float
+}
+class BallFactory {
+    + CreateBall(playableBallPrefab:GameObject, ballParentTransform:Transform, position:Vector3) : Ball
+    + DestroyBall(ballGameObject:GameObject) : void
+    + CheckBallContactTime(ballGameObject:GameObject, currentContactTime:float) : float
+}
+IBallFactory <|-- BallFactory
+@enduml

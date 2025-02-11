@@ -1,0 +1,22 @@
+@startuml
+interface IGameInput {
+}
+class GameInput {
+}
+class "IObservable`1"<T> {
+}
+IGameInput --> "OnStartButtonClickAsObservable<Unit>" "IObservable`1"
+IGameInput --> "OnQuitButtonClickAsObservable<Unit>" "IObservable`1"
+IGameInput --> "OnRestartButtonClickAsObservable<Unit>" "IObservable`1"
+IGameInput --> "OnBack2MenuButtonClickAsObservable<Unit>" "IObservable`1"
+MonoBehaviour <|-- GameInput
+IGameInput <|-- GameInput
+GameInput --> "_startButton" Button
+GameInput --> "_quitButton" Button
+GameInput --> "_restartButton" Button
+GameInput --> "_back2MenuButton" Button
+GameInput --> "OnStartButtonClickAsObservable<Unit>" "IObservable`1"
+GameInput --> "OnQuitButtonClickAsObservable<Unit>" "IObservable`1"
+GameInput --> "OnRestartButtonClickAsObservable<Unit>" "IObservable`1"
+GameInput --> "OnBack2MenuButtonClickAsObservable<Unit>" "IObservable`1"
+@enduml

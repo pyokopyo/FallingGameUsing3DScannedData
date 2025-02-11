@@ -1,0 +1,212 @@
+@startuml
+class Ball {
+    + Ball(gameObject:GameObject)
+}
+Ball --> "GameObject" GameObject
+class BallCollisionHandler {
+    - isTouchingFloor : bool = false
+    - OnCollisionEnter(collision:Collision) : void
+    - OnCollisionExit(collision:Collision) : void
+    + IsTouchingFloor() : bool
+}
+MonoBehaviour <|-- BallCollisionHandler
+interface IBallFactory {
+    CreateBall(prefab:GameObject, parent:Transform, position:Vector3) : Ball
+    DestroyBall(ballGameObject:GameObject) : void
+    CheckBallContactTime(ballGameObject:GameObject, currentContactTime:float) : float
+}
+class BallData {
+    + ContactTime : float <<get>> <<set>>
+}
+class BallFactory {
+    + CreateBall(playableBallPrefab:GameObject, ballParentTransform:Transform, position:Vector3) : Ball
+    + DestroyBall(ballGameObject:GameObject) : void
+    + CheckBallContactTime(ballGameObject:GameObject, currentContactTime:float) : float
+}
+BallData --> "Ball" GameObject
+BallData --> "StartingPosition" Vector3
+IBallFactory <|-- BallFactory
+class GameManager {
+    - _gameOverHeight : float
+    + GameManager(gameModel:IGameModel, ballFactory:IBallFactory, stageManager:IStageManager, scoreDataStorage:IScoreDataStorage, view:IGameView, tilt:IStageTiltController)
+    + SetGameOverHeight(gameOverPositionY:float) : void
+    + Update(deltaTime:float) : void
+    - GameOver(reason:string) : void
+    - GameClear() : void
+    - EndGameProcess(msg:string) : void
+    + SetBallParent(ballParentTransform:Transform) : void
+    + SetBallPrefab(playableBallPrefab:GameObject) : void
+    + CreateBall() : void
+}
+GameManager --> "_gameModel" IGameModel
+GameManager --> "_ballFactory" IBallFactory
+GameManager --> "_stageManager" IStageManager
+GameManager --> "_scoreDataStorage" IScoreDataStorage
+GameManager --> "_view" IGameView
+GameManager --> "_tilt" IStageTiltController
+GameManager --> "_gameRule" IGameRule
+GameManager --> "_ballParentTransform" Transform
+GameManager --> "_playableBallPrefab" GameObject
+interface IGameModel {
+    IsGameStarted : bool <<get>> <<set>>
+    RequiredContactTime : float <<get>>
+    GameOverTime : float <<get>>
+    GameTime : float <<get>> <<set>>
+    SaveFilePath : string <<get>> <<set>>
+    TiltSensitivity : float <<get>> <<set>>
+    ResetContactTimes() : void
+}
+class GameModel {
+    + IsGameStarted : bool <<get>> <<set>> = false
+    + RequiredContactTime : float <<get>> = 3.0f
+    + GameOverTime : float <<get>> = 30.0f
+    + GameTime : float <<get>> <<set>> = 0.0f
+    + SaveFilePath : string <<get>> <<set>> = ""
+    + TiltSensitivity : float <<get>> <<set>> = 20.0f
+    + GameModel()
+    + ResetContactTimes() : void
+}
+class "IList`1"<T> {
+}
+IGameModel --> "TopTimes<float>" "IList`1"
+IGameModel --> "ScoreData" ScoreData
+IGameModel <|-- GameModel
+GameModel o-> "TopTimes<float>" "IList`1"
+GameModel o-> "ScoreData" ScoreData
+interface IGameRule {
+    IsGameOver(gameOverPositionY:float) : bool
+    IsGameClear() : bool
+}
+class GameRule {
+    + GameRule(gameModel:IGameModel)
+    + IsGameOver(gameOverPositionY:float) : bool
+    + IsGameClear() : bool
+}
+IGameRule <|-- GameRule
+GameRule --> "_gameModel" IGameModel
+interface IScoreDataStorage {
+    SaveTopTimes(gameClearTime:float, saveFilePath:string) : void
+    LoadScores(saveFilePath:string) : ScoreData
+}
+class ScoreData {
+}
+class PlayerData {
+    + playerScore : float = 100f
+}
+class ScoreDataStorage {
+    + SaveTopTimes(gameClearTime:float, saveFilePath:string) : void
+    - SaveScore(playerScore:float, saveFilePath:string) : void
+    + LoadScores(saveFilePath:string) : ScoreData
+}
+class "List`1"<T> {
+}
+ScoreData o-> "players<PlayerData>" "List`1"
+IScoreDataStorage <|-- ScoreDataStorage
+interface IStageManager {
+    TiltStage(tiltSensitivity:float) : Quaternion
+}
+class StageManager {
+    + TiltStage(tiltSensitivity:float) : Quaternion
+}
+IStageManager <|-- StageManager
+class GamePresenter {
+    - Awake() : void
+    - Start() : void
+    - Update() : void
+    - Bind() : void
+    - InitializeDependencies() : void
+    - LoadGameData() : void
+    - InitializeView() : void
+    - InitializeGameManager() : void
+    - StartGame() : void
+    - RestartGame() : void
+    - Back2Menu() : void
+    - QuitGame() : void
+}
+MonoBehaviour <|-- GamePresenter
+GamePresenter --> "_gameViewComponent" MonoBehaviour
+GamePresenter --> "_playableBallPrefab" GameObject
+GamePresenter --> "_ballParentTransform" Transform
+GamePresenter --> "_gameOverPanel" Transform
+GamePresenter --> "_view" IGameView
+GamePresenter --> "_input" IGameInput
+GamePresenter --> "_tilt" StageTiltController
+GamePresenter --> "_gameModel" IGameModel
+GamePresenter --> "_ballFactory" IBallFactory
+GamePresenter --> "_stageManager" IStageManager
+GamePresenter --> "_scoreDataStorage" IScoreDataStorage
+GamePresenter --> "_gameManager" GameManager
+interface IGameInput {
+}
+class GameInput {
+}
+class "IObservable`1"<T> {
+}
+IGameInput --> "OnStartButtonClickAsObservable<Unit>" "IObservable`1"
+IGameInput --> "OnQuitButtonClickAsObservable<Unit>" "IObservable`1"
+IGameInput --> "OnRestartButtonClickAsObservable<Unit>" "IObservable`1"
+IGameInput --> "OnBack2MenuButtonClickAsObservable<Unit>" "IObservable`1"
+MonoBehaviour <|-- GameInput
+IGameInput <|-- GameInput
+GameInput --> "_startButton" Button
+GameInput --> "_quitButton" Button
+GameInput --> "_restartButton" Button
+GameInput --> "_back2MenuButton" Button
+GameInput --> "OnStartButtonClickAsObservable<Unit>" "IObservable`1"
+GameInput --> "OnQuitButtonClickAsObservable<Unit>" "IObservable`1"
+GameInput --> "OnRestartButtonClickAsObservable<Unit>" "IObservable`1"
+GameInput --> "OnBack2MenuButtonClickAsObservable<Unit>" "IObservable`1"
+interface IGameView {
+    ShowStartUI() : void
+    HideStartUI() : void
+    ShowGameStage() : void
+    HideGameStage() : void
+    ShowGameClearUI() : void
+    HideGameClearUI() : void
+    ShowGameOverUI() : void
+    HideGameOverUI() : void
+    ShowEndGameCommonUI() : void
+    HideEndGameCommonUI() : void
+    ShowPlayerRankUI() : void
+    HidePlayerRankUI() : void
+    DisplayScores(scoreData:ScoreData) : void
+    UpdateGameTime(gameTime:float) : void
+}
+class GameView {
+    + ShowStartUI() : void
+    + HideStartUI() : void
+    + ShowGameStage() : void
+    + HideGameStage() : void
+    + ShowGameClearUI() : void
+    + HideGameClearUI() : void
+    + ShowGameOverUI() : void
+    + HideGameOverUI() : void
+    + ShowEndGameCommonUI() : void
+    + HideEndGameCommonUI() : void
+    + ShowPlayerRankUI() : void
+    + HidePlayerRankUI() : void
+    + DisplayScores(scoreData:ScoreData) : void
+    + UpdateGameTime(gameTime:float) : void
+}
+MonoBehaviour <|-- GameView
+IGameView <|-- GameView
+GameView --> "_startUI" GameObject
+GameView --> "_gameStage" GameObject
+GameView --> "_gameClearUI" GameObject
+GameView --> "_gameOverUI" GameObject
+GameView --> "_endGameCommonUI" GameObject
+GameView --> "_playerRankUI" GameObject
+GameView --> "_rank1" TMP_Text
+GameView --> "_rank2" TMP_Text
+GameView --> "_rank3" TMP_Text
+GameView --> "_gameTime" TMP_Text
+interface IStageTiltController {
+    SetRotation(tiltRotation:Quaternion) : void
+}
+class StageTiltController {
+    + SetRotation(tiltRotation:Quaternion) : void
+}
+MonoBehaviour <|-- StageTiltController
+IStageTiltController <|-- StageTiltController
+StageTiltController --> "_stage" Transform
+@enduml

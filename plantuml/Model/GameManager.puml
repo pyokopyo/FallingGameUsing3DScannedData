@@ -1,0 +1,23 @@
+@startuml
+class GameManager {
+    - _gameOverHeight : float
+    + GameManager(gameModel:IGameModel, ballFactory:IBallFactory, stageManager:IStageManager, scoreDataStorage:IScoreDataStorage, view:IGameView, tilt:IStageTiltController)
+    + SetGameOverHeight(gameOverPositionY:float) : void
+    + Update(deltaTime:float) : void
+    - GameOver(reason:string) : void
+    - GameClear() : void
+    - EndGameProcess(msg:string) : void
+    + SetBallParent(ballParentTransform:Transform) : void
+    + SetBallPrefab(playableBallPrefab:GameObject) : void
+    + CreateBall() : void
+}
+GameManager --> "_gameModel" IGameModel
+GameManager --> "_ballFactory" IBallFactory
+GameManager --> "_stageManager" IStageManager
+GameManager --> "_scoreDataStorage" IScoreDataStorage
+GameManager --> "_view" IGameView
+GameManager --> "_tilt" IStageTiltController
+GameManager --> "_gameRule" IGameRule
+GameManager --> "_ballParentTransform" Transform
+GameManager --> "_playableBallPrefab" GameObject
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+interface IGameRule {
+    IsGameOver(gameOverPositionY:float) : bool
+    IsGameClear() : bool
+}
+class GameRule {
+    + GameRule(gameModel:IGameModel)
+    + IsGameOver(gameOverPositionY:float) : bool
+    + IsGameClear() : bool
+}
+IGameRule <|-- GameRule
+GameRule --> "_gameModel" IGameModel
+@enduml

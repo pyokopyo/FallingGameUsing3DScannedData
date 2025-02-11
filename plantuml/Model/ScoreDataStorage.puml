@@ -1,0 +1,20 @@
+@startuml
+interface IScoreDataStorage {
+    SaveTopTimes(gameClearTime:float, saveFilePath:string) : void
+    LoadScores(saveFilePath:string) : ScoreData
+}
+class ScoreData {
+}
+class PlayerData {
+    + playerScore : float = 100f
+}
+class ScoreDataStorage {
+    + SaveTopTimes(gameClearTime:float, saveFilePath:string) : void
+    - SaveScore(playerScore:float, saveFilePath:string) : void
+    + LoadScores(saveFilePath:string) : ScoreData
+}
+class "List`1"<T> {
+}
+ScoreData o-> "players<PlayerData>" "List`1"
+IScoreDataStorage <|-- ScoreDataStorage
+@enduml

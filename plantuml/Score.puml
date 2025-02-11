@@ -1,0 +1,28 @@
+@startuml
+interface IScoreData {
+}
+interface IPlayerData {
+    playerScore : float <<get>> <<set>>
+}
+interface IScoreManager {
+    SaveTopTimes(gameClearTime:float, saveFilePath:string) : void
+    LoadScores(saveFilePath:string) : ScoreData
+}
+class ScoreData {
+}
+class PlayerData {
+    + playerScore : float <<get>> <<set>>
+}
+class ScoreManager {
+    + SaveTopTimes(gameClearTime:float, saveFilePath:string) : void
+    - SaveScore(playerScore:float, saveFilePath:string) : void
+    + LoadScores(saveFilePath:string) : ScoreData
+}
+class "List`1"<T> {
+}
+IScoreData --> "players<PlayerData>" "List`1"
+IScoreData <|-- ScoreData
+ScoreData o-> "players<PlayerData>" "List`1"
+IPlayerData <|-- PlayerData
+IScoreManager <|-- ScoreManager
+@enduml

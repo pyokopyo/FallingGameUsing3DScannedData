@@ -1,0 +1,58 @@
+@startuml
+interface IGameView {
+    ShowStartUI() : void
+    HideStartUI() : void
+    ShowGameStage() : void
+    HideGameStage() : void
+    ShowGameClearUI() : void
+    HideGameClearUI() : void
+    ShowGameOverUI() : void
+    HideGameOverUI() : void
+    ShowCommonUI() : void
+    HideCommonUI() : void
+    DisplayScores(scoreData:ScoreData) : void
+    UpdateGameTime(gameTime:float) : void
+    SetRotation(tiltRotation:Quaternion) : void
+}
+class GameView {
+    + SetRotation(tiltRotation:Quaternion) : void
+    + ShowStartUI() : void
+    + HideStartUI() : void
+    + ShowGameStage() : void
+    + HideGameStage() : void
+    + ShowGameClearUI() : void
+    + HideGameClearUI() : void
+    + ShowGameOverUI() : void
+    + HideGameOverUI() : void
+    + ShowCommonUI() : void
+    + HideCommonUI() : void
+    + DisplayScores(scoreData:ScoreData) : void
+    + UpdateGameTime(gameTime:float) : void
+}
+class "IObservable`1"<T> {
+}
+IGameView --> "OnStartButtonClickAsObservable<Unit>" "IObservable`1"
+IGameView --> "OnQuitButtonClickAsObservable<Unit>" "IObservable`1"
+IGameView --> "OnRestartButtonClickAsObservable<Unit>" "IObservable`1"
+IGameView --> "OnBack2MenuButtonClickAsObservable<Unit>" "IObservable`1"
+MonoBehaviour <|-- GameView
+IGameView <|-- GameView
+GameView --> "_startUI" GameObject
+GameView --> "_gameStage" GameObject
+GameView --> "_gameClearUI" GameObject
+GameView --> "_gameOverUI" GameObject
+GameView --> "_commonUI" GameObject
+GameView --> "_rank1" TMP_Text
+GameView --> "_rank2" TMP_Text
+GameView --> "_rank3" TMP_Text
+GameView --> "_gameTime" TMP_Text
+GameView --> "_stage" Transform
+GameView --> "_startButton" Button
+GameView --> "_quitButton" Button
+GameView --> "_restartButton" Button
+GameView --> "_back2MenuButton" Button
+GameView --> "OnStartButtonClickAsObservable<Unit>" "IObservable`1"
+GameView --> "OnQuitButtonClickAsObservable<Unit>" "IObservable`1"
+GameView --> "OnRestartButtonClickAsObservable<Unit>" "IObservable`1"
+GameView --> "OnBack2MenuButtonClickAsObservable<Unit>" "IObservable`1"
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+class GamePresenter {
+    - Awake() : void
+    - Start() : void
+    - Update() : void
+    - Bind() : void
+    - InitializeDependencies() : void
+    - LoadGameData() : void
+    - InitializeView() : void
+    - InitializeGameManager() : void
+    - StartGame() : void
+    - RestartGame() : void
+    - Back2Menu() : void
+    - QuitGame() : void
+}
+MonoBehaviour <|-- GamePresenter
+GamePresenter --> "_gameViewComponent" MonoBehaviour
+GamePresenter --> "_playableBallPrefab" GameObject
+GamePresenter --> "_ballParentTransform" Transform
+GamePresenter --> "_gameOverPanel" Transform
+GamePresenter --> "_view" IGameView
+GamePresenter --> "_input" IGameInput
+GamePresenter --> "_tilt" StageTiltController
+GamePresenter --> "_gameModel" IGameModel
+GamePresenter --> "_ballFactory" IBallFactory
+GamePresenter --> "_stageManager" IStageManager
+GamePresenter --> "_scoreDataStorage" IScoreDataStorage
+GamePresenter --> "_gameManager" GameManager
+@enduml

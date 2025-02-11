@@ -1,0 +1,9 @@
+@startuml
+class BallCollisionDetector {
+    - isTouchingFloor : bool = false
+    - OnCollisionEnter(collision:Collision) : void
+    - OnCollisionExit(collision:Collision) : void
+    + IsTouchingFloor() : bool
+}
+MonoBehaviour <|-- BallCollisionDetector
+@enduml

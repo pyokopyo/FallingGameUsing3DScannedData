@@ -1,0 +1,11 @@
+@startuml
+interface IGameMove {
+    SetRotation(tiltRotation:Quaternion) : void
+}
+class GameMove {
+    + SetRotation(tiltRotation:Quaternion) : void
+}
+MonoBehaviour <|-- GameMove
+IGameMove <|-- GameMove
+GameMove --> "_stage" Transform
+@enduml

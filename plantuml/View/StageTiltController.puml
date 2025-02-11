@@ -1,0 +1,11 @@
+@startuml
+interface IStageTiltController {
+    SetRotation(tiltRotation:Quaternion) : void
+}
+class StageTiltController {
+    + SetRotation(tiltRotation:Quaternion) : void
+}
+MonoBehaviour <|-- StageTiltController
+IStageTiltController <|-- StageTiltController
+StageTiltController --> "_stage" Transform
+@enduml

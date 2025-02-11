@@ -1,0 +1,29 @@
+@startuml
+class GameManager {
+    - _tiltSensitivity : float = 20.0f
+    + GameManager(gameModel:IGameModel, ballManager:IBallManager, stageManager:IStageManager, playerScore:IScoreManager)
+    + SetView(view:IGameView) : void
+    + SetMove(move:IGameMove) : void
+    - _gameOverHeight : float
+    + SetGameOverHeight(gameOverPositionY:float) : void
+    + Update(deltaTime:float) : void
+    + IsGameOver(ball1PositionY:float, ball2PositionY:float, gameOverPositionY:float) : bool
+    - GameOver(reason:string) : void
+    - EndGame() : void
+    + IsGameClear() : bool
+    - GameClear() : void
+    + SetBallParent(ballParentTransform:Transform) : void
+    + SetBallPrefab(playableBallPrefab:GameObject) : void
+    + CreateBall() : void
+}
+GameManager --> "_gameModel" IGameModel
+GameManager --> "_ballManager" IBallManager
+GameManager --> "_stageManager" IStageManager
+GameManager --> "_score" IScoreManager
+GameManager --> "_view" IGameView
+GameManager --> "_ball1GameObject" GameObject
+GameManager --> "_ball2GameObject" GameObject
+GameManager --> "_stageTiltController" IGameMove
+GameManager --> "_ballParentTransform" Transform
+GameManager --> "_playableBallPrefab" GameObject
+@enduml
