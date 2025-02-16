@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 using UniRx;
+using UnityEngine.UIElements;
 
 public interface IGameInput
 {
@@ -13,19 +14,65 @@ public interface IGameInput
 
 public class GameInput : MonoBehaviour, IGameInput
 {
-   // 各種ボタン
-    [SerializeField] private Button _startButton;
-    [SerializeField] private Button _quitButton;
-    [SerializeField] private Button _restartButton;
-    [SerializeField] private Button _back2MenuButton;
-    
-    // 各種ボタンのIObservable
-    public IObservable<Unit> OnStartButtonClickAsObservable
-            => _startButton.OnClickAsObservable();
-    public IObservable<Unit> OnQuitButtonClickAsObservable
-            => _quitButton.OnClickAsObservable();
-    public IObservable<Unit> OnRestartButtonClickAsObservable
-            => _restartButton.OnClickAsObservable();
-    public IObservable<Unit> OnBack2MenuButtonClickAsObservable
-            => _back2MenuButton.OnClickAsObservable();
+    [SerializeField] private UIDocument _startUIDocument;
+    [SerializeField] private UIDocument _endUIDocument;
+
+    private Button _startButton;
+    private Button _quitButton;
+    private Button _restartButton;
+    private Button _back2MenuButton;
+
+    public IObservable<Unit> OnStartButtonClickAsObservable { get; private set; }
+    public IObservable<Unit> OnQuitButtonClickAsObservable { get; private set; }
+    public IObservable<Unit> OnRestartButtonClickAsObservable { get; private set; }
+    public IObservable<Unit> OnBack2MenuButtonClickAsObservable { get; private set; }
+
+    private VisualElement _startUI;
+    private VisualElement _endUI;
+
+    private void Awake()
+    {
+        if (_startUIDocument == null || _endUIDocument == null)
+        {
+            Debug.LogError("UI ドキュメントが設定されていません。");
+            return;
+        }
+
+        _startUI = _startUIDocument.rootVisualElement.Q<VisualElement>("StartUI");
+        _endUI = _endUIDocument.rootVisualElement.Q<VisualElement>("EndUI");
+
+        if (_startUI == null || _endUI == null)
+        {
+                Debug.LogError("UI要素 StartUI または EndUI が見つかりません。");
+                return;
+        }
+        
+        _startButton = _startUI.Q<Button>("start-button");
+        _quitButton = _startUI.Q<Button>("quit-button");
+        _restartButton = _endUI.Q<Button>("restart-button");
+        _back2MenuButton = _endUI.Q<Button>("back2menu-button");
+
+        if (_startButton == null || _quitButton == null || _restartButton == null || _back2MenuButton == null)
+        {
+            Debug.LogError("ボタン要素が見つかりません。");
+            return;
+        }
+
+        OnStartButtonClickAsObservable = Observable.FromEvent(
+            handler => _startButton.clicked += handler,
+            handler => _startButton.clicked -= handler
+        );
+        OnQuitButtonClickAsObservable = Observable.FromEvent(
+            handler => _quitButton.clicked += handler,
+            handler => _quitButton.clicked -= handler
+        );
+        OnRestartButtonClickAsObservable = Observable.FromEvent(
+            handler => _restartButton.clicked += handler,
+            handler => _restartButton.clicked -= handler
+        );
+        OnBack2MenuButtonClickAsObservable = Observable.FromEvent(
+            handler => _back2MenuButton.clicked += handler,
+            handler => _back2MenuButton.clicked -= handler
+        );
+    }
 }
