@@ -1,0 +1,5 @@
+D:/01__Dev/Unity/10_Project/FallingGameUsing3DScannedData/.utmp/Debug/2y311i1p/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/01__Dev/Unity/10_Project/FallingGameUsing3DScannedData/.utmp/Debug/2y311i1p/arm64-v8a/CMakeFiles/rebuild_cache.dir
+D:/01__Dev/Unity/10_Project/FallingGameUsing3DScannedData/.utmp/Debug/2y311i1p/arm64-v8a/GameActivity/CMakeFiles/game.dir
+D:/01__Dev/Unity/10_Project/FallingGameUsing3DScannedData/.utmp/Debug/2y311i1p/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+D:/01__Dev/Unity/10_Project/FallingGameUsing3DScannedData/.utmp/Debug/2y311i1p/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
