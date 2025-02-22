@@ -1,9 +1,0 @@
-@startuml
-interface IStageManager {
-    TiltStage(tiltSensitivity:float) : Quaternion
-}
-class StageManager {
-    + TiltStage(tiltSensitivity:float) : Quaternion
-}
-IStageManager <|-- StageManager
-@enduml

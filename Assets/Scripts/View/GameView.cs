@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
 
 public interface IGameView
 {
@@ -27,31 +28,102 @@ public interface IGameView
 
 public class GameView : MonoBehaviour, IGameView
 {
-    [SerializeField] private GameObject _startUI;
-    [SerializeField] private GameObject _gameStage;
-    [SerializeField] private GameObject _gameClearUI;
-    [SerializeField] private GameObject _gameOverUI;
-    [SerializeField] private GameObject _endGameCommonUI;
-    [SerializeField] private GameObject _playerRankUI;
 
-    [SerializeField] private TMP_Text _rank1;
-    [SerializeField] private TMP_Text _rank2;
-    [SerializeField] private TMP_Text _rank3;
-    [SerializeField] private TMP_Text _gameTime;
+    [SerializeField] private UIDocument _commonUIDocument;
+    [SerializeField] private UIDocument _startUIDocument;
+    [SerializeField] private UIDocument _endUIDocument;
+    [SerializeField] private GameObject _gameStage;
+
+    private VisualElement _commonUIroot;
+    private VisualElement _startUIroot;
+    private VisualElement _endUIroot;
+    private VisualElement _startUI;
+    private VisualElement _gameClearUI;
+    private VisualElement _gameOverUI;
+    private VisualElement _endGameCommonUI;
+    private Label _rank1;
+    private Label _rank2;
+    private Label _rank3;
+    private Label _clearTime;
 
     // UI表示/非表示メソッドの実装
-    public void ShowStartUI() { _startUI.SetActive(true); }
-    public void HideStartUI() { _startUI.SetActive(false); }
+    private void Awake()
+    {
+        _startUIroot = _startUIDocument.rootVisualElement;
+        _startUI = _startUIroot.Q<VisualElement>("StartUI");
+        _commonUIroot = _commonUIDocument.rootVisualElement.Q<VisualElement>("Common");
+        _rank1 = _commonUIroot.Q<Label>("rank_1");
+        _rank2 = _commonUIroot.Q<Label>("rank_2");
+        _rank3 = _commonUIroot.Q<Label>("rank_3");
+        _endUIroot = _endUIDocument.rootVisualElement;
+        _gameClearUI = _endUIroot.Q<VisualElement>("GameClear");
+        _gameOverUI = _endUIroot.Q<VisualElement>("GameOver");
+        _clearTime = _endUIroot.Q<Label>("clear_time");
+        _endGameCommonUI = _endUIroot.Q<VisualElement>("Common");
+    }
+
+    public void ShowStartUI() 
+    {
+        _startUI.style.opacity = 1f;
+        _startUI.pickingMode = PickingMode.Position;
+        foreach (var button in _startUI.Query<Button>().ToList())
+        {
+            button.pickingMode = PickingMode.Position;
+        }
+    }
+    public void HideStartUI()
+    {
+        _startUI.style.opacity = 0f;
+        _startUI.pickingMode = PickingMode.Ignore;
+        foreach (var button in _startUI.Query<Button>().ToList())
+        {
+            button.pickingMode = PickingMode.Ignore;
+        }
+    }
     public void ShowGameStage() { _gameStage.SetActive(true); }
     public void HideGameStage() { _gameStage.SetActive(false); }
-    public void ShowGameClearUI() { _gameClearUI.SetActive(true); }
-    public void HideGameClearUI() { _gameClearUI.SetActive(false); }
-    public void ShowGameOverUI() { _gameOverUI.SetActive(true); }
-    public void HideGameOverUI() { _gameOverUI.SetActive(false); }
-    public void ShowEndGameCommonUI() { _endGameCommonUI.SetActive(true); }
-    public void HideEndGameCommonUI() { _endGameCommonUI.SetActive(false); }
-    public void ShowPlayerRankUI() { _playerRankUI.SetActive(true); }
-    public void HidePlayerRankUI() { _playerRankUI.SetActive(false); }
+    public void ShowGameClearUI() 
+    {
+        _gameClearUI.style.opacity = 1f;
+    }
+    public void HideGameClearUI()
+    {
+        _gameClearUI.style.opacity = 0f;
+    }
+    public void ShowGameOverUI()
+    {
+        _gameOverUI.style.opacity = 1f;
+    }
+    public void HideGameOverUI()
+    {
+        _gameOverUI.style.opacity = 0f;
+    }
+    public void ShowEndGameCommonUI()
+    {
+        _endGameCommonUI.style.opacity = 1f;
+        _endGameCommonUI.pickingMode = PickingMode.Position;
+        foreach (var button in _endGameCommonUI.Query<Button>().ToList())
+        {
+            button.pickingMode = PickingMode.Position;
+        }
+    }
+    public void HideEndGameCommonUI()
+    {
+        _endGameCommonUI.style.opacity = 0f;
+        _endGameCommonUI.pickingMode = PickingMode.Ignore;
+        foreach (var button in _endGameCommonUI.Query<Button>().ToList())
+        {
+            button.pickingMode = PickingMode.Ignore;
+        }
+    }
+    public void ShowPlayerRankUI()
+    {
+        _commonUIroot.style.opacity = 1f;
+    }
+    public void HidePlayerRankUI()
+    {
+        _commonUIroot.style.opacity = 0f;
+    }
 
     public void DisplayScores(ScoreData scoreData)
     {
@@ -84,6 +156,6 @@ public class GameView : MonoBehaviour, IGameView
     }
     public void UpdateGameTime(float gameTime)
     {
-        _gameTime.text = $"Clear Time: {gameTime:F3}";
+        _clearTime.text = $"Clear Time: {gameTime:F3}";
     }
 }

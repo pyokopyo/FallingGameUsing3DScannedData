@@ -1,6 +1,0 @@
-@startuml
-class Ball {
-    + Ball(gameObject:GameObject)
-}
-Ball --> "GameObject" GameObject
-@enduml

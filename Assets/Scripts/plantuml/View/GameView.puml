@@ -1,0 +1,52 @@
+@startuml
+interface IGameView {
+    ShowStartUI() : void
+    HideStartUI() : void
+    ShowGameStage() : void
+    HideGameStage() : void
+    ShowGameClearUI() : void
+    HideGameClearUI() : void
+    ShowGameOverUI() : void
+    HideGameOverUI() : void
+    ShowEndGameCommonUI() : void
+    HideEndGameCommonUI() : void
+    ShowPlayerRankUI() : void
+    HidePlayerRankUI() : void
+    DisplayScores(scoreData:ScoreData) : void
+    UpdateGameTime(gameTime:float) : void
+}
+class GameView {
+    - Awake() : void
+    + ShowStartUI() : void
+    + HideStartUI() : void
+    + ShowGameStage() : void
+    + HideGameStage() : void
+    + ShowGameClearUI() : void
+    + HideGameClearUI() : void
+    + ShowGameOverUI() : void
+    + HideGameOverUI() : void
+    + ShowEndGameCommonUI() : void
+    + HideEndGameCommonUI() : void
+    + ShowPlayerRankUI() : void
+    + HidePlayerRankUI() : void
+    + DisplayScores(scoreData:ScoreData) : void
+    + UpdateGameTime(gameTime:float) : void
+}
+MonoBehaviour <|-- GameView
+IGameView <|-- GameView
+GameView --> "_commonUIDocument" UIDocument
+GameView --> "_startUIDocument" UIDocument
+GameView --> "_endUIDocument" UIDocument
+GameView --> "_gameStage" GameObject
+GameView --> "_commonUIroot" VisualElement
+GameView --> "_startUIroot" VisualElement
+GameView --> "_endUIroot" VisualElement
+GameView --> "_startUI" VisualElement
+GameView --> "_gameClearUI" VisualElement
+GameView --> "_gameOverUI" VisualElement
+GameView --> "_endGameCommonUI" VisualElement
+GameView --> "_rank1" Label
+GameView --> "_rank2" Label
+GameView --> "_rank3" Label
+GameView --> "_clearTime" Label
+@enduml

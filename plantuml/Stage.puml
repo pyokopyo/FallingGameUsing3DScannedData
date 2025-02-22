@@ -1,5 +1,0 @@
-@startuml
-class Stage {
-    + TiltStage(stage:Transform, tiltSensitivity:float) : void
-}
-@enduml
